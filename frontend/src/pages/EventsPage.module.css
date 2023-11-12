@@ -1,0 +1,29 @@
+.event {
+    margin: 2rem auto;
+    background-color: lightgray;
+    box-shadow: 0px 0px 16px 7px #000000;
+    border-radius: 8px;
+    color: black;
+    width: 30rem;
+    padding: 2rem;
+}
+
+span {
+    display: flex;
+    justify-content: space-between;
+}
+
+.description {
+    text-align: left;
+}
+
+h2:hover {
+    color: rgb(212, 0, 0);
+}
+
+
+
+a {
+    color: black;
+    text-decoration: none;
+}
