@@ -1,22 +1,25 @@
 .header {
-  max-width: 60rem;
-  margin: auto;
-  padding: 2rem;
+  background-color: black;
+  color: white;
+  box-shadow: 0px 5px 10px 3px #000000;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
-.list {
-  display: flex;
-  gap: 1rem;
-}
-
-.list a {
+.link {
+  color: white;
   text-decoration: none;
-  color: var(--color-primary-400);
+  margin-right: 10px;
 }
 
-.list a:hover,
-.list a.active {
-  color: var(--color-primary-800);
+.active_link {
+  color: red;
+  margin-right: 10px;
+}
+
+a:hover {
+  text-decoration: underline;
 }

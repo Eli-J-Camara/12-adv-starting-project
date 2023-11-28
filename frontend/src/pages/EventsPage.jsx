@@ -1,46 +1,38 @@
-import { Link, Outlet, useParams } from 'react-router-dom';
-import classes from './EventsPage.module.css';
+import { useEffect, useState } from 'react';
+
+import EventsList from '../components/EventsList';
 
 const EventsPage = () => {
-    const params = useParams();
-    const DUMMY_EVENTS = [
-        { 
-            title: 'Nussbaum Dinner', 
-            date: '11/9/23', 
-            description: 'Some shit going on at the Indianapolis Zoo.', 
-            id:'1'
-        },
-        { 
-            title: 'Life Science Summit', 
-            date: '11/8/23', 
-            description: 'Science is fun?', 
-            id:'2'
-        },
-        { 
-            title: 'Colts v Pats - Watch Party', 
-            date: '11/11/23', 
-            description: 'Der Klassikur: the corn-fed midwestern America version. lolz', 
-            id:'3'
-        },
-    ]
-    return (
-        <div>
-            {!params.id ? (<ul>
-                {DUMMY_EVENTS.map((event) => (
-                    <li className={classes.event} id={event.id}>
-                        <span>
-                            <Link to={event.id}><h2>{event.title}</h2></Link>
-                            <p>{event.date}</p>
-                        </span>
-                        <p className={classes.description}>{event.description}</p>
-                    </li>
-                ))}
-            </ul>
-            ) : (
-                <Outlet />
-            )}
-        </div>
-    )
-};
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchedEvents, setFetchedEvents] = useState(null);
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    async function fetchEvents() {
+      setIsLoading(true);
+      const response = await fetch('http://localhost:8080/events');
+
+      if (!response.ok) {
+        setError('Fetching events failed.');
+      } else {
+        const resData = await response.json();
+        setFetchedEvents(resData.events);
+      }
+      setIsLoading(false);
+    }
+
+    fetchEvents();
+  }, []);
+
+  return (
+    <>
+      <div style={{ textAlign: 'center' }}>
+        {isLoading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+      </div>
+      {!isLoading && fetchedEvents && <EventsList events={fetchedEvents} />}
+    </>
+  );
+}
 
 export default EventsPage;
