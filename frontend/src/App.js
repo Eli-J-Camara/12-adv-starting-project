@@ -21,34 +21,31 @@
 // BONUS: Add another (nested) layout route that adds the <EventNavigation> component above all /events... page components
 // DONE
 
-import { RouterProvider, createBrowserRouter} from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import EventDetailPage from './pages/EventDetailPage';
-import EventsPage from './pages/EventsPage';
+import EventsPage, { loader as eventsLoader } from './pages/EventsPage';
 import EditEventPage from './pages/EditEventPage';
 import NewEventPage from './pages/NewEventPage';
 import RootLayout from './pages/Root';
 import EventsRootLayout from './pages/EventsRoot';
+import ErrorPage from './pages/ErrorPage';
 
 const router = createBrowserRouter([
   { 
     path: '/', 
     element: <RootLayout />, 
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       // This extra "loader" property always takes a function that will be run before 
       // the component at this route definition is rendered.
       { path: 'events', element: <EventsRootLayout />, children: [
-        { path: '', element: <EventsPage />, loader: async () => {
-          const response = await fetch('http://localhost:8080/events');
-
-          if (!response.ok) {
-            // ...
-          } else {
-            const resData = await response.json();
-            return resData.events;
-          }
-        }},
+        { 
+          path: '',
+          element: <EventsPage />,
+          loader: eventsLoader,
+        },
         { path: ':id', element: <EventDetailPage /> },
         { path: 'new', element: <NewEventPage /> },
         { path: ':id/edit', element: <EditEventPage /> },
